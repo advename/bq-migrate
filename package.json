@@ -1,0 +1,15 @@
+{
+  "name": "@advename/bq-migrate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./src/bq-migrate.js",
+  "type": "commonjs",
+  "keywords": [
+    "bq-migrate"
+  ],
+  "author": "advename",
+  "license": "MIT",
+  "peerDependencies": {
+    "@google-cloud/bigquery": "^6.2.0"
+  }
+}
