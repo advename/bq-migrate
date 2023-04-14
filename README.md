@@ -81,6 +81,9 @@ BigQuery recently introduced [Multi-statement transactions](https://cloud.google
 
 **Query Jobs**: [Jobs are actions that BigQuery](https://cloud.google.com/bigquery/docs/jobs-overview) runs on your behalf to [load data](https://cloud.google.com/bigquery/docs/loading-data), [export data](https://cloud.google.com/bigquery/exporting-data-from-bigquery), [query data](https://cloud.google.com/bigquery/docs/running-queries), or [copy data](https://cloud.google.com/bigquery/docs/managing-tables#copy-table). Query Jobs in particular are basically all _"vanilla"_ SQL queries that you run against BigQuery. [BigQuery's Node.JS library (`@google-cloud/bigquery`)](https://github.com/googleapis/nodejs-bigquery), which is used to run migrations uses a combination of streams and Query jobs. Only query jobs have been carefully selected for migrations to not run into the above mentioned limitations.
 
+**⚠️ WARNING ⚠️**
+It's important that you don't use any streaming queries for migrations such as [`.insert()`](https://cloud.google.com/nodejs/docs/reference/bigquery/latest/bigquery/table#_google_cloud_bigquery_Table_insert_member_1_). Use instead the [`.query()`](https://cloud.google.com/nodejs/docs/reference/bigquery/latest/bigquery/dataset#_google_cloud_bigquery_Dataset_query_member_1_) method with SQL.
+
 ## Configuration
 When creating a new instance of the `BQMigration` class, you must provide an configuration object with the following required and optional properties:
 
