@@ -1,6 +1,6 @@
 # BigQuery Schema Migration
 
-`@advename/bq-migrate` is a Node.JS library for managing BigQuery schema migrations. It provides an interface to create, run, and rollback migrations for your BigQuery schema.
+`@advena/bq-migrate` is a Node.JS library for managing BigQuery schema migrations. It provides an interface to create, run, and rollback migrations for your BigQuery schema.
 
 Supported features:
 - Migration locks + expiration time for time locks (in seconds)
@@ -11,7 +11,7 @@ Supported features:
 ## Installation
 
 ```sh
-npm install @advename/bq-migrate
+npm install @advena/bq-migrate
 ```
 
 ## Quickstart
@@ -20,7 +20,7 @@ Create a `bqMigration` instance.
 
 ```js
 // bqMigration.js
-const BQMigrate = require("@advename/bq-migrate")
+const BQMigrate = require("@advena/bq-migrate")
 const bigquery = require("/somewhere/bigquery.js")
 const path = require("path");
 
