@@ -64,19 +64,19 @@ exports.down = async function(bigquery,datasetId){
 
 ## About `bq-migrations`
 
-#### Inspiration
+### Inspiration
 Industry tools like [Flyway](https://flywaydb.org/documentation/database/big-query) or [Liquibase](https://github.com/liquibase/liquibase-bigquery) require you to install the CLI package + a JDCB driver which may require Java Engine on your machine.
 Bit overkil, init?
 
 I was looking for a pure Node.JS approach, but didn't find one. So I ended up making my own after doing LOTS of research how Flyway and Liquibase tackle BigQuery with schema migrations.
 
-#### Batches
+### Batches
 Migrations are run in batches. Meaning if you have `001_init.js` and `002_person.js`, these are run together and are assigned the batch number `1`. When rolling back, these are then also rolled back together.
 
-#### Transactions
+### Transactions
 BigQuery recently introduced [Multi-statement transactions](https://cloud.google.com/bigquery/docs/reference/standard-sql/transactions). Unfortunately, DDL (`CREATE TABLE`) statements are only supported for [**temporary**](https://cloud.google.com/bigquery/docs/reference/standard-sql/transactions#statements_supported_in_transactions) entities, making them unusable for migrations.
 
-#### Query jobs vs stream & Quota Limitations
+### Query jobs vs stream & Quota Limitations
 **Streaming Inserts:** You cannot modify data with `UPDATE`, `DELETE`, or `MERGE` for the first 30 minutes after inserting it using streaming `INSERT`s. It may take up to 90 minutes for the data to be ready for copy operations. Streaming inserts are limited to 50,000 rows per request.([1](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-manipulation-language#limitations), [2](https://cloud.google.com/bigquery/quotas#streaming_inserts))
 
 **Query Jobs**: [Jobs are actions that BigQuery](https://cloud.google.com/bigquery/docs/jobs-overview) runs on your behalf to [load data](https://cloud.google.com/bigquery/docs/loading-data), [export data](https://cloud.google.com/bigquery/exporting-data-from-bigquery), [query data](https://cloud.google.com/bigquery/docs/running-queries), or [copy data](https://cloud.google.com/bigquery/docs/managing-tables#copy-table). Query Jobs in particular are basically all _"vanilla"_ SQL queries that you run against BigQuery. [BigQuery's Node.JS library (`@google-cloud/bigquery`)](https://github.com/googleapis/nodejs-bigquery), which is used to run migrations uses a combination of streams and Query jobs. Only query jobs have been carefully selected for migrations to not run into the above mentioned limitations.
@@ -145,6 +145,15 @@ Unlocks the migration lock table. Returns a Promise that resolves when the lock 
 
 Asynchronously reads the migration directory and returns a sorted list of Javascript or Typescript migration files. Returns a Promise that resolves to an array of sorted migration file names.
 
+
+## Todo
+I've built this package for personal use. However, If it should ever gain traction then I would consider adding:
+- tests
+- CJS/ESM dual build
+- rewrite in typescript and provide types
+- improved error reporting
+- repair failed migrations
+- ...?
 
 ## Disclaimer
 Please note that I am not responsible for any errors or issues that may arise from using this package. By using this package, you acknowledge that you are using it at your own risk and that I cannot be held accountable for any problems or damages that may occur as a result of using this v. Please ensure that you have adequate backups and precautions in place before implementing or using this package in any production or critical environments.
